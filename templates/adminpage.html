@@ -1,0 +1,28 @@
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/static/stylesheet/adminpage.css">
+    <title>addingbooks</title>
+
+</head>
+<body>
+<div class="container">
+
+    <div>
+        <button type="button" class="btn"><a href="/">logout </a></button>
+    </div>
+
+<form action="/addingbook" method="post">
+    <h3>Book To Add:</h3> <input type="text" id="bookname" placeholder="Enter book name "  ><br>
+    <h3>Genre:</h3>      <input type="text" id="gener" placeholder="Enter gener" ><br>
+    <h3>Author:</h3>     <input type="text" id="authorname" placeholder="enter author name" >
+            <input type="button" id="boook_adding" value="submit">
+</form>
+ </div>
+</div>
+<div  class="flash" id="adminpageflash"></div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/adminpage.js"></script>
+
+</body>
+</html>

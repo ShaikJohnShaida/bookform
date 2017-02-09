@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>homepage</title>
+<link type="text/css" rel="stylesheet" href="/static/stylesheet/userpage.css"/>
+</head>
+<body>
+
+<div class="main">
+    <div>
+        <button type="button" class="btn"><a href="/userlogout"> Logout </a></button>
+    </div>
+<h1>Welcome To Book Store !!</h1>
+<form action="/bookread" method="post">
+
+    <h3>List Of Books:</h3> <select id ="options" name="options" onclick=booklist()">
+                            <!--<option value="list of books" >list of books</option>-->
+                            {% for book in book %}
+                                <option > {{ book.name }}</option>
+                            {% endfor %}
+                            </select><br><br>
+                            <input  id="readbook" type="button" value="submit">
+</form>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+<form action="/bookrequest" method="post">
+    <h3>Request of books:</h3>
+    <div class="bname"><label><b>Book name</b></label>
+    <input type='text' plkacename="requirebook" id="bookname" placeholder="enter book name "><br></div>
+
+    <div class="bname"><label><b>Author name</b></label>
+    <input type='text' plkacename="requirebook" id="authorname" placeholder="enter author name"><br></div>
+
+    <input type="button" id="request" value="submit">
+    <div id="flash"></div>
+
+</form>
+
+<div id="adminrequestflash"></div>
+<br>
+<p>Do you want to be an Admin of BookForms? Then <a id="adminlink" href="/adminsignup">click here</a>. </p>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</div>
+<script type="text/javascript" src="/static/myjavascript.js"></script>
+<script type="text/javascript" src="/static/userpage.js"></script>
+
+</body>
+</html>

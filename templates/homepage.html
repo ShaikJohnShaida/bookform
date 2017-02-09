@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <link type="text/css" rel="stylesheet" href="/static/stylesheet/homepage.css">
+
+</header>
+<body>
+
+<h1>welcome to book reading</h1>
+<div class="button-pannel">
+  <button onclick="document.getElementById('id01').style.display='block'" style="width:200px;height: 48px;line-height: 0px;font-size: 17px;padding: 0;"><h5>Login </h5></button>
+  <button onclick="document.getElementById('id03').style.display='block'" style="background:blue;width:200px;height: 48px;line-height: 0px;font-size: 17px;padding: 0;"><h5>Signup</h5> </button>
+</div>
+<div class="admin-button">
+  <button onclick="document.getElementById('id02').style.display='block'" style="background:blue;width:200px;height: 48px;line-height: 0px;font-size: 17px;padding: 0;"><h5>Admin Login</h5> </button>
+</div>
+
+<div id="id01" class="modal">
+
+  <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+    <div>
+      <h2 class="cufon-helvetica" style="font-size: 40px;color:rgb(0,0,250);text-align: center;">Welcome!</h2>
+      <h3 class="cufon-helvetica" style="font-size: 25px;text-align: center;">Login as user</h3>
+    </div>
+    <div class="container" style="background-color:#f2f2f2;padding:15px 5;">
+      <label><b>EmailId<span class="required ">*</span></b></label>
+      <input type="text" placeholder="Enter EmailId" id="uemail" name="uemail" required>
+
+      <label><b>Password<span class="required">*</span></b></label>
+      <input type="password" placeholder="Enter Password"id="psw" name="psw" required>
+
+      <button type="button" id="loginbutton">Login</button>
+         <div id="loginflash"></div>
+      <input type="checkbox" checked="checked"> Remember me
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" id="google" style=" width: 170px;background: wheat;"><a href="/googlelogin" style="color: black;
+        text-decoration: none;">Google SignIn</a></button>
+      <span class="psw">Forgot <a href="/forgot">password?</a></span>
+    </div>
+  </form>
+</div>
+<div id="id02" class="modal">
+
+  <form class="modal-content animate" >
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+    <div>
+      <h2 class="cufon-helvetica" style="font-size: 40px;color:rgb(0,0,250);text-align: center;">Welcome!</h2>
+      <h3 class="cufon-helvetica" style="font-size: 25px;text-align: center;">Login as Admin</h3>
+    </div>
+    <div class="container" style="background-color:#f2f2f2;padding:15px 5;">
+      <label><b>Email:<span class="required">*</span></b></label>
+      <input type="text" placeholder="Enter Your Email_Id" id="auname" pattern="[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,3}$" required>
+
+      <label><b>Password<span class="required">*</span></b></label>
+      <input type="password" placeholder="Enter Password" id="apw" name="psw" required>
+
+      <button id="adminlogin-button" type="button">Login</button>
+        <div id="admin_flash_message"></div>
+      <input type="checkbox" checked="checked"> Remember me
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+
+      <span class="psw">Forgot <a href="/forgotpassword">password?</a></span>
+    </div>
+  </form>
+</div>
+
+<div id="id03" class="modal">
+
+ <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+   <div>
+      <h2 class="cufon-helvetica" style="font-size: 40px;color:rgb(0,0,250);text-align: center;">Welcome!</h2>
+      <h3 class="cufon-helvetica" style="font-size: 25px;text-align: center;"> Create free account</h3>
+    </div>
+
+    <div class="container"style="background-color:#f2f2f2;padding:15px 5;">
+      <label><b>User Name<span class="required">*</span></b></label>
+      <input type="text" placeholder="Enter User Name" id="uname" name="uname" required>
+
+      <label><b>Email-Id<span class="required">*</span></b></label>
+      <input type="text" placeholder="Enter Your EmailId" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,3}$" required>
+
+      <label><b>Password<span class="required">*</span></b></label>
+      <input type="password" id="pswd" placeholder="Enter Password" name="psw" required>
+
+      <label><b>Conform Password<span class="required">*</span></b></label>
+      <input type="password"  id="rpswd"placeholder="Re Enter Password" name="rpsw" required>
+
+      <button type="button" id="signup_button">Signup</button>
+        <div id="signupflash"></div>
+      <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn">Cancel</button>
+
+         <button type="button" id="google1" style=" width: 170px;background: wheat;"><a href="/googlelogin" style="color: black;
+        text-decoration: none;">Google SignIn</a></button>
+
+    </div>
+
+   </form>
+</div>
+ <div  style="min-height:100% width:80%">
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+   </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/userlogin.js"></script>
+    <script type="text/javascript" src="/static/myjavascript.js"></script>
+</body>
+</html>
