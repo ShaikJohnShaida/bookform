@@ -402,9 +402,9 @@ def get_book():
     logging.info(books)
     dict=[]
     for book in books:
-        x=book.key.id()
-        dict.append({"id":x,"bookname":book.name,"author":book.author,"gener":book.genre})
+        dict.append({"id":book.key.id(),"bookname":book.name,"author":book.author,"gener":book.genre})
     bookdata = json.dumps({"Books":dict})
+
     logging.info(bookdata)
     headers = {'Content-Type': 'application/json'}
     return bookdata,200,headers
@@ -433,22 +433,22 @@ mykey = 'thisismykey'
 #     else:
 #        return make_response(jsonify({'error': 'Invalid secret_key given by you'}), 404)
 
-@app.route('/Books', methods=['POST'])
-def restapiaddingbooks():
-    if mykey != request.headers.get('key'):
-        return make_response(jsonify({'error':'Invalid yor authorized key'}),404)
-    else:
-        data = request.get_json()
-        bookname = data.get('name')
-        bookauthor = data.get('author')
-        bookgenre = data.get('genre')
-        if Books.query(ndb.AND(Books.name == bookname, Books.author == bookauthor)).get():
-            return make_response(jsonify({'result': 'This book is already in the list'}), 200)
-        else:
-            books = Books(name=bookname, genre=bookgenre, author=bookauthor)
-            books.put()
-            logging.info(books)
-            return make_response(jsonify({'result': 'Your book added successfully'}), 200)
+# @app.route('/Books', methods=['POST'])
+# def restapiaddingbooks():
+#     if mykey != request.headers.get('key'):
+#         return make_response(jsonify({'error':'Invalid yor authorized key'}),404)
+#     else:
+#         data = request.get_json()
+#         bookname = data.get('name')
+#         bookauthor = data.get('author')
+#         bookgenre = data.get('genre')
+#         if Books.query(ndb.AND(Books.name == bookname, Books.author == bookauthor)).get():
+#             return make_response(jsonify({'result': 'This book is already in the list'}), 200)
+#         else:
+#             books = Books(name=bookname, genre=bookgenre, author=bookauthor)
+#             books.put()
+#             logging.info(books)
+#             return make_response(jsonify({'result': 'Your book added successfully'}), 200)
 
 @app.route('/bookdel', methods=['DELETE'])
 def bookdel():
@@ -486,20 +486,40 @@ def apireceive():
         header = {'key': 'thisismykey'}
         r = urlfetch.fetch(url, headers=header)
         return r.content
+# rest api request with optioanl parameters
 @app.route('/Book')
-def get_books():
-    if mykey == request.headers.get('key'):
-        cursor = Cursor(urlsafe = request.args.get('cursor'))
-        data, next_cursor, more = Books.query().fetch_page(datalimit, start_cursor=cursor)
+def filterbook():
+    if mykey!=request.headers.get('key'):
+        return make_response(jsonify({'error':"Invalid yor authorized key"}))
+    else:
+        bookname =request.args.get('name')
+        authorname = request.args.get('author')
+        genre = request.args.get('genre')
+        limit = request.args.get('limit') or 2
+        cursor = Cursor(urlsafe=request.args.get('cursor'))
+        if not bookname and not authorname and not genre:
+            data, next_cursor, more = Books.query().fetch_page(int(limit), start_cursor=cursor)
+        elif not bookname and not authorname and genre :
+            data, next_cursor, more = Books.query(Books.genre==genre).fetch_page(int(limit), start_cursor=cursor)
+        elif not bookname and not genre and authorname:
+            data, next_cursor, more = Books.query(Books.author == authorname).fetch_page(int(limit), start_cursor=cursor)
+        elif bookname and not authorname and not genre:
+            data, next_cursor, more = Books.query(Books.name == bookname).fetch_page(int(limit), start_cursor=cursor)
+        elif not bookname and authorname and genre:
+            logging.info('true')
+            data, next_cursor, more = Books.query(Books.author == authorname, Books.genre == genre).fetch_page(int(limit), start_cursor=cursor)
+        elif bookname and genre and not authorname:
+            data, next_cursor, more = Books.query(Books.name == bookname, Books.genre == genre).fetch_page(int(limit), start_cursor=cursor)
+        elif bookname and authorname and not genre:
+            data, next_cursor, more = Books.query(Books.author == authorname,Books.name == bookname).fetch_page(int(limit), start_cursor=cursor)
+        else:
+            data, next_cursor, more = Books.query(Books.name==bookname, Books.author == authorname,Books.genre==genre).fetch_page(int(limit), start_cursor=cursor)
         dic = []
         for book in data:
-            a = book.key.id()
-            dic.append({"id":a,'name': book.name, 'genre': book.genre, 'author': book.author})
+            dic.append({"id": book.key.id(), 'name': book.name, 'genre': book.genre, 'author': book.author})
         if more or next_cursor:
             book = {'books': dic, "cursor": next_cursor.urlsafe(), "more": more}
             return jsonify(book)
-    else:
-       return make_response(jsonify({'error': 'Invalid secret_key given by you'}), 404)
 
 @app.route('/Book', methods=['POST'])
 def book():
@@ -546,5 +566,41 @@ def bookdelete(bookID):
         book.key.delete()
         return make_response(jsonify({"result" : "Book Successfully deleted with givn id",'bookid':bookID}))
 
+@app.route('/requestbook',methods = ['POST'])
+def request_book():
+    if mykey != request.headers.get('key'):
+        return make_response(jsonify({'error': 'Invalid yor authorized key'}), 404)
+    else:
+        data = request.get_json()
+        bookname = data.get('name')
+        bookauthor = data.get('author')
+        bookgenre = data.get('genre')
+        newbook = Books(name = bookname , author = bookauthor, genre= bookgenre)
+        newbook.put()
+        bookid=newbook.key.id()
+        return make_response(jsonify({"result" : " The Requested Book is Successfully added",'bookid':newbook.key.id()}))
+@app.route("/sample")
+def sample():
+    bookname = request.args.get('name')
+    authorname = request.args.get('author')
+    genre = request.args.get('genre')
+    limit = request.args.get('limit') or 2
+    cursor = Cursor(urlsafe=request.args.get('cursor'))
+    logging.info('authorname : {} limit : {}'.format(authorname, int(limit)))
+    query = Books.query()
+    if bookname:
+        query = query.filter(Books.name == bookname)
+    if authorname:
+        query = query.filter(Books.author == authorname )
+    if genre:
+        query = query.filter(Books.genre == genre)
+    data,next_cursor,more = query.fetch_page(int(limit), start_cursor=cursor)
+    logging.info(data)
+    dic = []
+    for book in data:
+        dic.append({"id": book.key.id(), 'name': book.name, 'genre': book.genre, 'author': book.author})
+    if more or next_cursor:
+         book = {'books': dic, "cursor": next_cursor.urlsafe(), "more": more}
+         return jsonify(book)
 if __name__ == '__main__':
     app.run(debug=True)

@@ -43,3 +43,23 @@ function booklist() {
  xhttp.open("GET", "/get_book", true);
  xhttp.send();
 }
+
+//$("#booklist").click(function(event){
+//$.ajax({
+//    url: "/get_book",
+//    type: 'GET',
+//    success:function(response){
+//     var data = JSON.parse(this.responseText)
+//           bookdata=data["Books"]
+
+//            bookdata.forEach(function(o){
+//                console.log(o);
+//                var elm = document.getElementById("booklist");
+//               elm.innerHTML = elm.innerHTML + "<li>" + o.bookname+ "</li>";
+//    }
+//    },
+//    error:function(error){
+//        console.log(error);
+//    }
+//});
+//}

@@ -45,3 +45,43 @@ $(document).ready(function(){
 
         });
         });
+//    $("#booklist").click(function(event) {
+//        $.ajax({
+//        url: "/get_book",
+//        type: 'GET',
+//        success:function(response){
+//            var data = JSON.parse(this.responseText)
+//            bookdata=data["Books"]
+//            bookdata.forEach(function(o){
+//                //console.log(o);
+//                var elm = document.getElementById("book");
+//                elm.innerHTML = elm.innerHTML + "<li>" + o.bookname+ "</li>";
+//                console.log(o.bookname)
+//        document.getElementById("myDropdown").classList.toggle("show");
+//
+//    });
+//    },
+//    error:function(error){
+//        console.log(error);
+//    }
+//    });
+//    });
+
+function book() {
+   var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var data = JSON.parse(this.responseText)
+           bookdata=data["Books"]
+
+            bookdata.forEach(function(o){
+                console.log(o);
+                var elm = document.getElementById("book");
+               elm.innerHTML = elm.innerHTML + "<ul>" + o.bookname+ "</ul>";
+               document.getElementById("myDropdown").classList.toggle("show");
+            })
+        }
+    }
+ xhttp.open("GET", "/get_book", true);
+ xhttp.send();
+}

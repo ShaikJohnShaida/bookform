@@ -3,6 +3,6 @@ import os
 
 
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
-    app_url = 'https://myfirsthelloworldwithflask.appspot.com/'
+    app_url = 'https://onlinebookform.appspot.com/'
 else:
-    app_url = 'http://localhost:9080'
+    app_url = 'http://localhost:8080'

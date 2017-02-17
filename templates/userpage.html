@@ -2,6 +2,7 @@
 <head>
 <title>homepage</title>
 <link type="text/css" rel="stylesheet" href="/static/stylesheet/userpage.css"/>
+    <!--<link type="text/css" rel="stylesheet" href="/static/stylesheet/droupdown.css"/>-->
 </head>
 <body>
 
@@ -10,25 +11,31 @@
         <button type="button" class="btn"><a href="/userlogout"> Logout </a></button>
     </div>
 <h1>Welcome To Book Store !!</h1>
+  <div class="dropdown_list">
+      <button id = "booklist", onclick="book()" class="dropbtn"> delete book</button>
+      <div id="myDropdown" class="dropdown-content">
+          <li  id="book"> </li>
+          </div>
+  </div>
+
+
+
+
+
+
+
+
 <form action="/bookread" method="post">
 
-    <h3>List Of Books:</h3> <select id ="options" name="options" onclick=booklist()">
+    <h3>List Of Books:</h3> <select id ="options" name="options" onclick = "booklist()">
                             <!--<option value="list of books" >list of books</option>-->
-                            {% for book in book %}
-                                <option > {{ book.name }}</option>
-                            {% endfor %}
+                            <!--{% for book in book %}-->
+                                <!--<option > {{ book.name }}</option>-->
+                            <!--{% endfor %}-->
                             </select><br><br>
                             <input  id="readbook" type="button" value="submit">
 </form>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
+
 <form action="/bookrequest" method="post">
     <h3>Request of books:</h3>
     <div class="bname"><label><b>Book name</b></label>
