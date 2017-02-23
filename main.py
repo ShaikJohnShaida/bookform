@@ -353,7 +353,9 @@ def resetpasswordstore():
      else:
          return 'Don\'t try to change the uid'
 
-
+@app.route('/deletepage')
+def deletepage():
+    return render_template('deletebook.html')
 
 
 @app.route('/adminlogin', methods=['POST'])
@@ -408,6 +410,7 @@ def get_book():
     logging.info(bookdata)
     headers = {'Content-Type': 'application/json'}
     return bookdata,200,headers
+
 
 @app.route('/adminlogout')
 def adminlogout():
@@ -559,9 +562,6 @@ def bookupdate(bookID):
 
 @app.route('/Book/<bookID>',methods = ['DELETE'])
 def bookdelete(bookID):
-    if mykey !=request.headers.get('key'):
-        return make_response(jsonify({'error': 'Invalid yor authorized key',"id":bookID}), 404)
-    else:
         book=Books.get_by_id(int(bookID))
         book.key.delete()
         return make_response(jsonify({"result" : "Book Successfully deleted with givn id",'bookid':bookID}))
@@ -602,5 +602,18 @@ def sample():
     if more or next_cursor:
          book = {'books': dic, "cursor": next_cursor.urlsafe(), "more": more}
          return jsonify(book)
+
+
+@app.route('/bookdeatil/<bookname>')
+def bookdetail(bookname):
+    book=Books.query(Books.name==bookname).get()
+    logging.info(book)
+    dic=[]
+    dict.append({"id": book.key.id(), "bookname": book.name, "author": book.author, "gener": book.genre})
+    bookdata = json.dumps({"Books": dict})
+    logging.info(bookdata)
+    headers = {'Content-Type': 'application/json'}
+    return bookdata, 200, headers
+
 if __name__ == '__main__':
     app.run(debug=True)

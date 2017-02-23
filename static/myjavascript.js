@@ -37,6 +37,8 @@ function booklist() {
                 console.log(o);
                 var elm = document.getElementById("options");
                elm.innerHTML = elm.innerHTML + "<option>" + o.bookname+ "</option>";
+               document.getElementById("options").disabled=true;
+
             })
         }
     }

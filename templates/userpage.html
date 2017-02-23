@@ -2,29 +2,22 @@
 <head>
 <title>homepage</title>
 <link type="text/css" rel="stylesheet" href="/static/stylesheet/userpage.css"/>
-    <!--<link type="text/css" rel="stylesheet" href="/static/stylesheet/droupdown.css"/>-->
 </head>
 <body>
 
+<div class="container">
+
+  <div class="delete">
+    <!--<button  onclick="book()" type="button" data-toggle="dropdown">delete book-->
+    <!--</button>-->
+     <div>
+        <button type="button" class="bt"><a href="/deletepage">deletebook </a></button>
+    </div>
 <div class="main">
     <div>
         <button type="button" class="btn"><a href="/userlogout"> Logout </a></button>
     </div>
 <h1>Welcome To Book Store !!</h1>
-  <div class="dropdown_list">
-      <button id = "booklist", onclick="book()" class="dropbtn"> delete book</button>
-      <div id="myDropdown" class="dropdown-content">
-          <li  id="book"> </li>
-          </div>
-  </div>
-
-
-
-
-
-
-
-
 <form action="/bookread" method="post">
 
     <h3>List Of Books:</h3> <select id ="options" name="options" onclick = "booklist()">
